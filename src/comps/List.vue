@@ -136,7 +136,7 @@ else{
     <div class="data-wrap">
         <a class="showDataA" href="" @click.prevent="showData=!showData">Show data</a>
         <pre v-if="showData">
-            {{search()}}
+            {{filteredList}}
         </pre>
     </div>
 
@@ -235,9 +235,10 @@ else{
     display: flex;
     justify-content: start;
     flex-flow: row wrap;
+    padding: 2rem;
 }
 .showDataA{
-    color: #CCC
+    color: #CCC;
 }
 
 </style>
