@@ -1,0 +1,144 @@
+.type {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 2rem;
+    margin: 0 10%;
+    border-radius: 4px;
+    color: white;
+    font-weight: 900;
+}
+.grass {
+    background-color: light-green;
+    background: linear-gradient(180deg, #9bcc50 50%, #9bcc50 50%);
+    color: #212121;
+}
+.fire {
+    background-color: #fd7d24;
+    color: #fff;
+}
+.water {
+    background-color: #4592c4;
+    color: #fff;
+}
+.bug {
+    background-color: #729f3f;
+    color: #fff;
+}
+.normal {
+    background-color: #a4acaf;
+    color: #212121;
+}
+.poison {
+    background-color: #b97fc9;
+    color: #fff;
+}
+.electric {
+    background-color: #eed535;
+    color: #212121;
+}
+.ground {
+    background: linear-gradient(180deg, #f7de3f 50%, #ab9842 50%);
+    color: #212121;
+}
+.fairy {
+    background-color: #fdb9e9;
+    color: #212121;
+}
+.fighting {
+    background-color: #d56723;
+    color: #fff;
+}
+.psychic {
+    background-color: #f366b9;
+    color: #fff;
+}
+.rock {
+    background-color: #a38c21;
+    color: #fff;
+}
+.ghost {
+    background-color: #7b62a3;
+    color: #fff;
+}
+.ice {
+    background-color: #51c4e7;
+    color: #212121;
+}
+.dragon {
+    background: linear-gradient(180deg, #53a4cf 50%, #f16e57 50%);
+    color: #fff;
+}
+.dark {
+    background-color: #707070;
+    color: #fff;
+}
+.steel {
+    background-color: #9eb7b8;
+    color: #212121;
+}
+.fire {
+    background-color: #fd7d24;
+    color: #fff;
+}
+.water {
+    background-color: #4592c4;
+    color: #fff;
+}
+.bug {
+    background-color: #729f3f;
+    color: #fff;
+}
+.normal {
+    background-color: #a4acaf;
+    color: #212121;
+}
+.poison {
+    background-color: #b97fc9;
+    color: #fff;
+}
+.electric {
+    background-color: #eed535;
+    color: #212121;
+}
+.ground {
+    background: linear-gradient(180deg, #f7de3f 50%, #ab9842 50%);
+    color: #212121;
+}
+.fairy {
+    background-color: #fdb9e9;
+    color: #212121;
+}
+.fighting {
+    background-color: #d56723;
+    color: #fff;
+}
+.psychic {
+    background-color: #f366b9;
+    color: #fff;
+}
+.rock {
+    background-color: #a38c21;
+    color: #fff;
+}
+.ghost {
+    background-color: #7b62a3;
+    color: #fff;
+}
+.ice {
+    background-color: #51c4e7;
+    color: #212121;
+}
+.dragon {
+    background: linear-gradient(180deg, #53a4cf 50%, #f16e57 50%);
+    color: #fff;
+}
+.dark {
+    background-color: #707070;
+    color: #fff;
+}
+.steel {
+    background-color: #9eb7b8;
+    color: #212121;
+}
