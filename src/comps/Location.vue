@@ -182,6 +182,10 @@ const filteredList = computed(() => {
   });
 });
 
+function scrollTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 fetchLocs();
 </script>
 
@@ -233,7 +237,7 @@ fetchLocs();
                 <button
                     :disabled="isLoading"
                     class="load-button"
-                    @click="fetchLocs()"
+                    @click="fetchLocs(); scrollTop()"
                 >
                     <span v-if="isLoadingLoc">Loading...</span
                     ><span v-else>Next locations</span>
