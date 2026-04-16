@@ -2,7 +2,7 @@
 import { ref } from "vue";
 
 let link = "https://pokeapi.co/api/v2/pokemon?limit=12&offset=0";
-let locLink = "https://pokeapi.co/api/v2/location-area?limit=20&offset=0";
+let locLink = "https://pokeapi.co/api/v2/location?limit=20&offset=0";
 
 const data = ref([]);
 const locData = ref([]);
@@ -72,19 +72,27 @@ async function fetchLocs() {
 }
 
 async function fetchLoc(locationList) {
-    const promises = locationList.map(async (pokemon) => {
-        const response = await fetch(pokemon.url);
+    const promises = locationList.map(async (locationItem) => {
+        const response = await fetch(locationItem.url);
         const fullData = await response.json();
 
-        return {
-            name: fullData.names[0].name,
-            pokemons: fullData.pokemon_encounters.map((encounter) => {
+        let pokemons = [];
+        if (fullData.areas && fullData.areas.length > 0) {
+            const areaResponse = await fetch(fullData.areas[0].url);
+            const areaData = await areaResponse.json();
+
+            pokemons = areaData.pokemon_encounters.map((encounter) => {
                 return {
                     name: encounter.pokemon.name,
                     url: encounter.pokemon.url,
                 };
-            }),
+            });
+        }
+        return {
+            name: fullData.name,
+            pokemons: pokemons,
         };
+
     });
 
     const results = await Promise.all(promises);
@@ -118,6 +126,13 @@ function capitalize(string) {
 }
 
 
+//formating name : name-name => Name Name
+function formatLocName(name) {
+    if (!name) return '';
+    return name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
+
+
 fetchLocs();
 </script>
 
@@ -147,11 +162,10 @@ fetchLocs();
 
     <!-- LOCS LIST -->
     <div v-else class="cards-wrap">
-        <div v-for="loc in locData" class="card">
-            <div @click="getLocPoks(loc.pokemons)">
-                <div class="card-name">{{ loc.name }}</div>
+        <div v-for="loc in locData" class="loc-card" @click="getLocPoks(loc.pokemons)">
+            <div class="loc-name">{{ formatLocName(loc.name) }}</div>
+                <div class="loc-encounters">{{ loc.pokemons.length }} Pokémon</div>
             </div>
-        </div>
         <div class="button-wrap">
             <button
                 :disabled="isLoading"
@@ -213,6 +227,42 @@ fetchLocs();
 .card-img{
     width: 100%;
 }
+
+/*
+    css pre locations cards
+*/
+.loc-card {
+    font-size: 1.5rem;
+    width: 18em;
+    height: 8em;
+    border: 3px solid #222;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.loc-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background-color: #fff;
+}
+.loc-name {
+    font-size: 1.8rem;
+    font-weight: 800;
+    text-align: center;
+    padding: 0 1rem;
+}
+.loc-encounters {
+    font-size: 1.2rem;
+    color: #888;
+    margin-top: 0.5rem;
+}
+
+
 .button-wrap {
     display: flex;
     justify-content: center;
