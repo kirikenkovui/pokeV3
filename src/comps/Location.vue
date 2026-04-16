@@ -3,6 +3,7 @@ import { ref } from "vue";
 
 let link = "https://pokeapi.co/api/v2/pokemon?limit=12&offset=0";
 let locLink = "https://pokeapi.co/api/v2/location?limit=20&offset=0";
+const showData = ref(false);
 
 const data = ref([]);
 const locData = ref([]);
@@ -138,45 +139,51 @@ fetchLocs();
 
 <template>
     <div class="wrap">
-    <!-- POKEMON LIST -->
-    <div v-if="locPokList.length > 0">
-    <div class="cards-wrap">
-        <div v-for="pokemon in locPokList" class="card">
-            <RouterLink :to="'detail/' + pokemon.id.toString()">
-            <div class="card-name">{{capitalize(pokemon.name) }}</div>
-             <div class="card-id">#{{("000" + pokemon.id).slice(-4)}}</div> <!--   3 => #0003   -->
-            <div class="card-img-wrap">
-                <img class="card-img" :src="pokemon.img" :alt="pokemon.name"></img>
-            </div>
-            <div class="type-wrap">
-                <div class="type" :class="pokemon.type">{{capitalize(pokemon.type)}}</div>
-            </div>
-            </RouterLink>
+        <!-- POKEMON LIST -->
+        <div v-if="locPokList.length > 0">
+        <div class="cards-wrap">
+            <div v-for="pokemon in locPokList" class="card">
+                <RouterLink :to="'detail/' + pokemon.id.toString()">
+                <div class="card-name">{{capitalize(pokemon.name) }}</div>
+                <div class="card-id">#{{("000" + pokemon.id).slice(-4)}}</div> <!--   3 => #0003   -->
+                <div class="card-img-wrap">
+                    <img class="card-img" :src="pokemon.img" :alt="pokemon.name"></img>
+                </div>
+                <div class="type-wrap">
+                    <div class="type" :class="pokemon.type">{{capitalize(pokemon.type)}}</div>
+                </div>
+                </RouterLink>
 
+            </div>
         </div>
-    </div>
-    <div class="button-wrap">
-        <button class="load-button" @click="locPokList = []">Back to list</button>
-    </div>
-    </div>
-
-    <!-- LOCS LIST -->
-    <div v-else class="cards-wrap">
-        <div v-for="loc in locData" class="loc-card" @click="getLocPoks(loc.pokemons)">
-            <div class="loc-name">{{ formatLocName(loc.name) }}</div>
-                <div class="loc-encounters">{{ loc.pokemons.length }} Pokémon</div>
-            </div>
         <div class="button-wrap">
-            <button
-                :disabled="isLoading"
-                class="load-button"
-                @click="fetchLocs()"
-            >
-                <span v-if="isLoadingLoc">Loading...</span
-                ><span v-else>Next locations</span>
-            </button>
+            <button class="load-button" @click="locPokList = []"><span>Back to list</span></button>
+        </div>
+        </div>
+
+        <!-- LOCS LIST -->
+        <div v-else class="cards-wrap">
+            <div v-for="loc in locData" class="loc-card" @click="getLocPoks(loc.pokemons)">
+                <div class="loc-name">{{ formatLocName(loc.name) }}</div>
+                    <div class="loc-encounters">{{ loc.pokemons.length }} Pokemons</div>
+                </div>
+            <div class="button-wrap">
+                <button
+                    :disabled="isLoading"
+                    class="load-button"
+                    @click="fetchLocs()"
+                >
+                    <span v-if="isLoadingLoc">Loading...</span
+                    ><span v-else>Next locations</span>
+                </button>
+            </div>
         </div>
     </div>
+    <div class="data-wrap">
+        <a class="showDataA" href="" @click.prevent="showData=!showData">Show data</a>
+        <pre v-if="showData">
+            {{locData}}
+        </pre>
     </div>
 </template>
 
@@ -282,5 +289,15 @@ fetchLocs();
 }
 .load-button span {
     font-size: 1.3rem;
+}
+.data-wrap{
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    flex-flow: row wrap;
+    padding: 2rem;
+}
+.showDataA{
+    color: #CCC;
 }
 </style>
