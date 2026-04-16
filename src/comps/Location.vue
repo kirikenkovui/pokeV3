@@ -1,9 +1,11 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 let link = "https://pokeapi.co/api/v2/pokemon?limit=12&offset=0";
 let locLink = "https://pokeapi.co/api/v2/location?limit=20&offset=0";
 const showData = ref(false);
+const showSorting = ref(false);
+const selectedNum = ref("");
 
 const data = ref([]);
 const locData = ref([]);
@@ -157,6 +159,29 @@ function formatLocName(name) {
 }
 
 
+//sorting (select)
+const filteredList = computed(() => {
+
+  return locData.value.filter((loc) => {
+    if (selectedNum.value == "")return true;
+    if (selectedNum.value == "<5"){
+      return loc.pokemons.length <= 5
+    };
+    if (selectedNum.value == "<10"){
+      return loc.pokemons.length <= 10;
+    }
+    if (selectedNum.value == ">10"){
+      return loc.pokemons.length > 10;
+    }
+    if (selectedNum.value == "<5<10"){
+      return loc.pokemons.length < 10 && loc.pokemons.length > 5;
+    }
+    else{
+      return;
+    }
+  });
+});
+
 fetchLocs();
 </script>
 
@@ -185,8 +210,20 @@ fetchLocs();
         </div>
 
         <!-- LOCS LIST -->
-        <div v-else class="cards-wrap">
-            <div v-for="loc in locData" @click="getLocPoks(loc.pokemons)">
+        <div v-if="locPokList.length === 0" class="sorting">
+            <a href="#" class="showDataA" style="padding: 1rem; margin: 0 auto" @click="showSorting=!showSorting"
+                ><span v-if="showSorting">Sorting ↓</span><span v-else>Sorting ↑</span>
+            </a>
+            <select v-if="showSorting" v-model="selectedNum">
+                <option value="">All</option>
+                <option value="<5">Only Green(<=5)</option>
+                <option value="<5<10">Only Blue(<=5)</option>
+                <option value=">10">Only Red(>10) </option>
+                <option value="<10">Blue and Green(<=10)</option>
+            </select>
+        </div>
+        <div v-if="locPokList.length<1" class="cards-wrap">
+            <div v-for="loc in filteredList" @click="getLocPoks(loc.pokemons)">
                 <div class="loc-card" :class="loc.pokemons.length <= 5 ? 'low-pokemon-num' : (loc.pokemons.length <= 10 ? 'medium-pokemon-num' : 'high-pokemon-num')">
                     <div class="loc-name">{{ formatLocName(loc.name) }}</div>
                         <div class="loc-pokemon-num">{{ loc.pokemons.length }} Pokemon</div>
@@ -260,6 +297,42 @@ fetchLocs();
     width: 100%;
 }
 
+
+.sorting {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+}
+.sorting a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 1.2rem;
+    transition: color 0.3s;
+}
+.sorting a:hover {
+    color: #5494d8;
+}
+.sorting select {
+    margin-top: 1rem;
+    border: none;
+    border-radius: 30px;
+    padding: 0 1rem;
+    color: #333;
+    background: #DFDFDF;
+    height: 2.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.sorting select:hover {
+    background: #BCBCBC;
+}
+.sorting select:focus {
+    outline: none;
+}
 /*
     css pre locations cards
 */
