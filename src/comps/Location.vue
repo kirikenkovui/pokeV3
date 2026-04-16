@@ -9,6 +9,8 @@ const locData = ref([]);
 const isLoading = ref(false);
 const isLoadingLoc = ref(false);
 
+const locPokList = ref([]);
+
 async function fetchData(linkHere) {
     if (isLoading.value || !link) return;
     isLoading.value = true;
@@ -89,6 +91,18 @@ async function fetchLoc(locationList) {
     return results;
 }
 
+function getLocPoks(pokList) {
+    let newList = [];
+    pokList.forEach((pok) => {
+        data.value.map((loadedPok) => {
+            if (loadedPok.name == pok.name) {
+                newList.push(loadedPok);
+            }
+        });
+    });
+    locPokList.value = newList;
+}
+
 const dataFromLC = localStorage.getItem("pokemon_data");
 if (dataFromLC) {
     data.value = JSON.parse(dataFromLC);
@@ -99,13 +113,44 @@ if (dataFromLC) {
     link = `https://pokeapi.co/api/v2/pokemon?limit=12&offset=${fetchData}`;
 }
 
+function capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+
 fetchLocs();
 </script>
 
 <template>
+    <div class="wrap">
+    <!-- POKEMON LIST -->
+    <div v-if="locPokList.length > 0">
     <div class="cards-wrap">
+        <div v-for="pokemon in locPokList" class="card">
+            <RouterLink :to="'detail/' + pokemon.id.toString()">
+            <div class="card-name">{{capitalize(pokemon.name) }}</div>
+             <div class="card-id">#{{("000" + pokemon.id).slice(-4)}}</div> <!--   3 => #0003   -->
+            <div class="card-img-wrap">
+                <img class="card-img" :src="pokemon.img" :alt="pokemon.name"></img>
+            </div>
+            <div class="type-wrap">
+                <div class="type" :class="pokemon.type">{{capitalize(pokemon.type)}}</div>
+            </div>
+            </RouterLink>
+
+        </div>
+    </div>
+    <div class="button-wrap">
+        <button class="load-button" @click="locPokList = []">Back to list</button>
+    </div>
+    </div>
+
+    <!-- LOCS LIST -->
+    <div v-else class="cards-wrap">
         <div v-for="loc in locData" class="card">
-            <div class="card-name">{{ loc.name }}</div>
+            <div @click="getLocPoks(loc.pokemons)">
+                <div class="card-name">{{ loc.name }}</div>
+            </div>
         </div>
         <div class="button-wrap">
             <button
@@ -118,27 +163,38 @@ fetchLocs();
             </button>
         </div>
     </div>
+    </div>
 </template>
 
 <style scoped>
-.cards-wrap {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-flow: row wrap;
+.wrap{
     width: 80vw;
-    background-color: #fff;
-    margin: 0 12rem;
+    background-color: #FFF;
+    margin:0 12rem;
+    padding-bottom: 4rem;
     border-radius: 9px;
     padding: 1rem;
 }
+.cards-wrap {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1.5rem;
+    background-color: white;
+    padding-top: 4rem;
+}
+
 .card {
-    width: 17em;
-    height: 20em;
-    border: solid black 3px;
-    border-radius: 9px;
-    margin: 1rem;
-    padding: 1rem;
+    font-size: 2rem;
+    width: 9em;
+    height: 13em;
+    border: 3px solid #222;
+    border-radius: 6px;
+}
+.card a{
+    text-decoration: none;
+    color: black;
 }
 .card-name {
     font-size: 2rem;
@@ -147,6 +203,15 @@ fetchLocs();
     justify-content: center;
     align-items: center;
     padding-top: 0.5rem;
+}
+.card-id{
+    color: #AAA;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.card-img{
+    width: 100%;
 }
 .button-wrap {
     display: flex;

@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { computed } from "vue";
+
 const showData = ref(false);
 
 const pokeSearch = ref("");
