@@ -7,6 +7,7 @@ import { ref } from "vue";
     <nav>
         <RouterLink class="link" to="/">List</RouterLink
         ><RouterLink class="link" to="/game">Game</RouterLink>
+        <RouterLink class="link" to="/location">Locations</RouterLink>
     </nav>
     <!-- <h1 class="name">Poke v2</h1> -->
     <main>
