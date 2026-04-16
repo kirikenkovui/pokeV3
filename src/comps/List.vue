@@ -8,7 +8,7 @@ const pokeSearch = ref("");
 const typeSearch = ref("");
 
 //fetching
-let link = "https://pokeapi.co/api/v2/pokemon?limit=12&offset=0";
+let link = "https://pokeapi.co/api/v2/pokemon?limit=72&offset=0";
 let isLoading = ref(false);
 const data = ref([]);
 async function fetchData(linkHere) {
@@ -77,8 +77,7 @@ if(dataFromLC){
   link = `https://pokeapi.co/api/v2/pokemon?limit=12&offset=${data.value.length}`;
 }
 else{
-  fetchData(link)
-  link = `https://pokeapi.co/api/v2/pokemon?limit=12&offset=${fetchData}`;
+  fetchData("https://pokeapi.co/api/v2/pokemon?limit=120&offset=0")
 }
 
 

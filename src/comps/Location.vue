@@ -9,6 +9,7 @@ const data = ref([]);
 const locData = ref([]);
 const isLoading = ref(false);
 const isLoadingLoc = ref(false);
+const isLoadingPoks = ref(false);
 
 const locPokList = ref([]);
 
@@ -100,16 +101,38 @@ async function fetchLoc(locationList) {
     return results;
 }
 
-function getLocPoks(pokList) {
-    let newList = [];
-    pokList.forEach((pok) => {
-        data.value.map((loadedPok) => {
-            if (loadedPok.name == pok.name) {
-                newList.push(loadedPok);
+async function getLocPoks(pokList) {
+    if (isLoadingPoks.value) return;
+    isLoadingPoks.value = true;
+
+    try {
+        let newList = [];
+        let missingPoks = [];
+
+        pokList.forEach((pok) => {
+            const found = data.value.find((loadedPok) => loadedPok.name === pok.name);
+            if (found) {
+                newList.push(found);
+            } else {
+                missingPoks.push({ name: pok.name, url: pok.url });
             }
         });
-    });
-    locPokList.value = newList;
+
+        // if pokemon isn't in the localStorage we fetch it
+        if (missingPoks.length > 0) {
+            const fetchedPoks = await fetchPokemon(missingPoks);
+            newList.push(...fetchedPoks);
+
+            data.value.push(...fetchedPoks);
+            localStorage.setItem("pokemon_data", JSON.stringify(data.value));
+        }
+
+        locPokList.value = newList;
+    } catch (err) {
+        console.error("Error fetching location pokemons:", err);
+    } finally {
+        isLoadingPoks.value = false;
+    }
 }
 
 const dataFromLC = localStorage.getItem("pokemon_data");
