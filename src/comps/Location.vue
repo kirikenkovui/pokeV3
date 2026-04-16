@@ -186,9 +186,11 @@ fetchLocs();
 
         <!-- LOCS LIST -->
         <div v-else class="cards-wrap">
-            <div v-for="loc in locData" class="loc-card" @click="getLocPoks(loc.pokemons)">
-                <div class="loc-name">{{ formatLocName(loc.name) }}</div>
-                    <div class="loc-encounters">{{ loc.pokemons.length }} Pokemons</div>
+            <div v-for="loc in locData" @click="getLocPoks(loc.pokemons)">
+                <div class="loc-card" :class="loc.pokemons.length <= 5 ? 'low-pokemon-num' : (loc.pokemons.length <= 10 ? 'medium-pokemon-num' : 'high-pokemon-num')">
+                    <div class="loc-name">{{ formatLocName(loc.name) }}</div>
+                        <div class="loc-pokemon-num">{{ loc.pokemons.length }} Pokemon</div>
+                    </div>
                 </div>
             <div class="button-wrap">
                 <button
@@ -265,20 +267,20 @@ fetchLocs();
     font-size: 1.5rem;
     width: 18em;
     height: 8em;
-    border: 3px solid #222;
+    border: 1px solid #e5e7eb;
+    letter-spacing: 0.05em;
     border-radius: 6px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    background-color: #f9f9f9;
     transition: transform 0.2s, box-shadow 0.2s;
 }
 .loc-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    background-color: #fff;
+    /*background-color: #fff;*/
 }
 .loc-name {
     font-size: 1.8rem;
@@ -286,13 +288,20 @@ fetchLocs();
     text-align: center;
     padding: 0 1rem;
 }
-.loc-encounters {
+.loc-pokemon-num {
     font-size: 1.2rem;
-    color: #888;
+    color: #000;
     margin-top: 0.5rem;
 }
-
-
+.low-pokemon-num{
+    background-color: #D1FAE5;
+}
+.medium-pokemon-num{
+    background-color: #DBEAFE;
+}
+.high-pokemon-num{
+    background-color: #FEE2E2;
+}
 .button-wrap {
     display: flex;
     justify-content: center;
