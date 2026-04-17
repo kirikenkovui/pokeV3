@@ -30,7 +30,6 @@ async function fetchData(linkHere) {
         isLoading.value = false;
         localStorage.removeItem("pokemon_data");
         localStorage.setItem("pokemon_data", JSON.stringify(data.value));
-
     }
 }
 
@@ -49,6 +48,7 @@ async function fetchPokemon(pokemonList) {
             ),
             img: fullData.sprites.other["official-artwork"].front_default,
             type: fullData.types[0].type.name,
+            chance: (fullData.weight + fullData.height)
         };
     });
 

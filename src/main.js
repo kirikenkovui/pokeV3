@@ -9,12 +9,16 @@ import ListView from "./comps/List.vue";
 import DetailView from "./comps/Detail.vue";
 import GameView from "./comps/Game.vue";
 import LocationView from "./comps/Location.vue";
+import PacksView from "./comps/Packs.vue";
+import AlbumView from "./comps/Album.vue";
 
 const routes = [
   { path: "/", component: ListView },
   { path: "/detail/:id", component: DetailView },
   { path: "/game", component: GameView },
   { path: "/location", component: LocationView },
+  { path: "/packs", component: PacksView },
+  { path: "/album", component: AlbumView },
 ];
 
 export const router = createRouter({
