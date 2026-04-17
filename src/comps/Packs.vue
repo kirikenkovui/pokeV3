@@ -71,24 +71,23 @@ function saveCardsToLC() {
     localStorage.setItem("cards", JSON.stringify(cards.value));
 }
 
-function openPack1() {
-    // if (isOpening.value) return;
+function openPack(amount) {
+    if (isOpening.value) return;
     isOpening.value = true;
 
-    gottenCards.value.push(
-        data.value[Math.floor(Math.random() * data.value.length)],
-    );
-}
+    for (let i = 0; i < amount; i++) {
+        let foundCard = false;
 
-function openPack3() {
-    for (let i = 0; i < 3; i++) {
-        openPack1();
-    }
-}
+        while (!foundCard) {
+            const curCard = data.value[Math.floor(Math.random() * data.value.length)];
 
-function openPack5() {
-    for (let i = 0; i < 5; i++) {
-        openPack1();
+            if (curCard.type !== "normal") {
+                if (Math.random() <= 0.9) continue;
+            }
+
+            gottenCards.value.push(curCard);
+            foundCard = true;
+        }
     }
 }
 
@@ -104,9 +103,9 @@ function getOwnedCount(id) {
 <template>
     <h1>Open Packs!!!</h1>
     <div v-if="!isOpening" class="pack-wrap">
-        <div id="pack1" @click="openPack1()" class="pack">1 Card</div>
-        <div id="pack3" @click="openPack3()" class="pack">3 Cards</div>
-        <div id="pack5" @click="openPack5()" class="pack">5 Cards</div>
+        <div id="pack1" @click="openPack(1)" class="pack">1 Card</div>
+        <div id="pack3" @click="openPack(3)" class="pack">3 Cards</div>
+        <div id="pack5" @click="openPack(5)" class="pack">5 Cards</div>
     </div>
     <div v-if="isOpening">
         <div class="cards-wrap">

@@ -57,7 +57,7 @@ const addedCards = computed(() => {
 </script>
 
 <template>
-    <h1>Album</h1>
+    <h1>Your Album</h1>
     <div class="cards-wrap">
         <div
             v-if="addedCards.length > 0"
@@ -81,7 +81,7 @@ const addedCards = computed(() => {
                         {{ capitalize(pokemon.type) }}
                     </div>
                 </div>
-                <div class="card-id" v-if="pokemon.count > 1">
+                <div id="card-count" class="card-id" v-if="pokemon.count > 1">
                     You have this card {{ pokemon.count }} times
                 </div>
             </RouterLink>
@@ -104,7 +104,7 @@ const addedCards = computed(() => {
 <style scoped>
 h1 {
     text-align: center;
-    font-size: 2rem;
+    font-size: 3rem;
 }
 .cards-wrap {
     display: flex;
@@ -127,6 +127,7 @@ h1 {
     border-radius: 6px;
     display: flex;
     flex-direction: column;
+    padding-bottom: 0.3rem;
 }
 .card a {
     text-decoration: none;
