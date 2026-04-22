@@ -91,6 +91,42 @@ function openPack(amount) {
     }
 }
 
+function openEpicPack(amount) {
+    if (isOpening.value) return;
+    isOpening.value = true;
+
+    for (let i = 0; i < amount; i++) {
+        let foundCard = false;
+
+        while (!foundCard) {
+            const curCard = data.value[Math.floor(Math.random() * data.value.length)];
+
+            if (curCard.type == "normal") continue;
+
+            gottenCards.value.push(curCard);
+            foundCard = true;
+        }
+    }
+}
+
+function openNormalPack(amount) {
+    if (isOpening.value) return;
+    isOpening.value = true;
+
+    for (let i = 0; i < amount; i++) {
+        let foundCard = false;
+
+        while (!foundCard) {
+            const curCard = data.value[Math.floor(Math.random() * data.value.length)];
+
+            if (curCard.type !== "normal") continue;
+
+            gottenCards.value.push(curCard);
+            foundCard = true;
+        }
+    }
+}
+
 function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -101,11 +137,24 @@ function getOwnedCount(id) {
 </script>
 
 <template>
+<div class="all-wrap">
     <h1>Open Packs!!!</h1>
-    <div v-if="!isOpening" class="pack-wrap">
-        <div id="pack1" @click="openPack(1)" class="pack">1 Card</div>
-        <div id="pack3" @click="openPack(3)" class="pack">3 Cards</div>
-        <div id="pack5" @click="openPack(5)" class="pack">5 Cards</div>
+    <div class="all-packs-wrap">
+        <div v-if="!isOpening" class="pack-wrap">
+            <div id="pack1" @click="openNormalPack(1)" class="pack">1 Card</div>
+            <div id="pack3" @click="openNormalPack(3)" class="pack">3 Cards</div>
+            <div id="pack5" @click="openNormalPack(5)" class="pack">5 Cards</div>
+        </div>
+        <div v-if="!isOpening" class="pack-wrap">
+            <div @click="openPack(1)" class="regularpack pack ">1 regular Card</div>
+            <div @click="openPack(3)" class="regularpack pack ">3 regular Cards</div>
+            <div @click="openPack(5)" class="regularpack pack ">5 regular Cards</div>
+        </div>
+        <div v-if="!isOpening" class="pack-wrap">
+            <div @click="openEpicPack(1)" class="epicpack pack ">1 EPIC Card</div>
+            <div @click="openEpicPack(3)" class="epicpack pack ">3 EPIC Cards</div>
+            <div @click="openEpicPack(5)" class="epicpack pack ">5 EPIC Cards</div>
+        </div>
     </div>
     <div v-if="isOpening">
         <div class="cards-wrap">
@@ -139,45 +188,59 @@ function getOwnedCount(id) {
             </button>
         </div>
     </div>
+</div>
 </template>
 
 <style scoped>
-h1 {
+html {
     text-align: center;
     font-size: 4rem;
+    margin: 0;
+}
+h1{
+    font-size: 3rem;
+    text-align: center;
+}
+.all-packs-wrap{
+    width: 90%;
+    margin: 2rem 5%;
+    columns: 3;
 }
 .pack-wrap {
     display: flex;
-    justify-content: space-evenly;
-}
-.pack {
-    border: 1px black solid;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 .pack {
     padding: 1rem;
-    font-size: 2rem;
-    width: 25rem;
-    height: 40rem;
-    border: 3px solid #222;
+    margin: 1rem;
+    width: 28rem;
+    font-size: 2em;
+    height: 10rem;
+
+    border: none;
     border-radius: 10px;
+
     color: white;
+    font-size: 2rem;
     font-weight: 900;
+    font-size: 3rem;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 3rem;
+
+    background: #2A7B9B;
+    background: linear-gradient(90deg, rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%);
 }
-#pack1{
-    background: #3c7da3;
-    background: linear-gradient(157deg, rgba(60, 125, 163, 0.88) 0%, rgba(42, 37, 143, 0.87) 77%);
-}
-#pack3{
-    background: #3c8ba3;
-    background: linear-gradient(300deg, rgba(60, 139, 163, 0.88) 1%, rgba(120, 199, 30, 0.87) 100%);
-}
-#pack5{
+.epicpack{
     background: #833AB4;
     background: linear-gradient(330deg, rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%);
+}
+.regularpack{
+    background: #020024;
+    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 25, 255, 1) 100%);
 }
 .button-wrap {
     display: flex;
